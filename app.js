@@ -1,8 +1,15 @@
 'use strict';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const graphqlHttp = require('express-graphql');
+import 'dotenv/config';
+import express from 'express';
+import bodyParser from 'body-parser';
+const { ApolloServer, gql } = require('apollo-server-express');
+
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
+
+import passport from 'passport';
+import FacebookStrategy from 'passport-facebook';
 const mongoose = require('mongoose');
 // import authentication middleware
 const isAuth = require('./middleware/isAuth');
@@ -12,9 +19,9 @@ const graphQLResolvers = require('./graphql/resolvers/index');
 
 const util = require('./util/util');
 const app = express();
-// parse json in request body 
+// parse json in request body
 app.use(bodyParser.json());
-// allow CORS 
+// allow CORS
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
@@ -25,7 +32,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-// add authentication middleware 
+// add authentication middleware
 app.use(isAuth);
 
 // graphQL API
