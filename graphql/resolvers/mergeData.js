@@ -1,6 +1,6 @@
 const DataLoader = require('dataloader');
 
-const Event = require('../../models/event');
+const Plan = require('../../models/plans');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
 

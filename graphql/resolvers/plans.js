@@ -1,9 +1,9 @@
 'use strict';
 
 const User = require('../../models/user');
-const Event = require('../../models/event');
-const Booking = require('../../models/booking');
-const { dateToString } = require('../../helpers/date');
+const Event = require('../../models/plans');
+const Booking = require('../../models/bookings');
+const { dateToString } = require('../../utils/utils');
 const { transformEvent, events, singleEvent, user } = require('./util');
 
 
@@ -23,7 +23,7 @@ module.exports = {
     if(!req.isAuth){
       throw new Error('Unauthenticated');
     }
-    
+
     const event = new Event({
       title: args.eventInput.title,
       description: args.eventInput.description,

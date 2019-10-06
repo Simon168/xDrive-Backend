@@ -1,81 +1,33 @@
 'use strict';
 
-const app = require('./app');
-const debug = require('debug')('app:server');
-const http = require('http');
-const mongoose = require('mongoose');
-// connect to mongoDB 
-const mongodbConnection = require('./mongodb/connection');
-mongodbConnection();
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
+import app from './app';
+import mongodbConnection from './mongodb/connection';
+import utils from './utils/utils';
 
-/**
- * Get port from environment and store in Express.
- */
-// normalise PORT
-const port = normalizePort(process.env.PORT || 3008);
-app.set('port', port);
+(async () => {
+  // read environment variables in process.env
+  const result = await dotenv.config()
 
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
-/**
- * Listen on provided port, on all network interfaces.
- */
- server.listen(port, '0.0.0.0');
- server.on('error', onError);
- server.on('listening', onListening);
-
-
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-  let port = parseInt(val, 10);
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  };
-  if (port >= 0) {
-    // port number
-    return port;
-  };
-  return false;
-};
-/**
- * Event listener for HTTP server "error" event.
- */
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
+  if (result.error) {
+    throw result.error
   }
+  // log parsed process.env
+  console.log(result.parsed)
+  // connect to mongoDB
+  await mongodbConnection();
 
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  /*
+   * Get port from environment and store in Express.
+  */
+  // normalise PORT
+  const port = utils.normalizePort(process.env.APP_PORT || 3008);
+  app.listen(port, () => {
+    console.log(`apollo server running on port ${port}`);
+  });
+  console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+  console.log('process.env.MONGO_URI:', process.env.MONGO_URI);
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
-/**
- * Event listener for HTTP server "listening" event.
- */
-function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-};
+})();

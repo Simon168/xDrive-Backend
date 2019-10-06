@@ -38,7 +38,7 @@ export const refreshTokens = async (token, refreshToken, models, SECRET) => {
     // refreshToken: secret base64 encoded
     const { user: { id } } = jwt.decode(refreshToken);
     userId = id;
-  } catch (err) {
+  } catch (ex) {
     // if err, return an empty object
     return {};
   }
@@ -56,7 +56,7 @@ export const refreshTokens = async (token, refreshToken, models, SECRET) => {
 
   try {
     jwt.verify(refreshToken, user.refreshSecret);
-  } catch (err) {
+  } catch (ex) {
     return {};
   }
   // return promise all in an array

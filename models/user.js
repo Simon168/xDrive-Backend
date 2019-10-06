@@ -1,4 +1,6 @@
+// import ORM
 import mongoose, { Schema } from 'mongoose';
+// import bcryptjs 
 import { hash, compare } from 'bcryptjs';
 
 const userSchema = new Schema({
@@ -6,6 +8,7 @@ const userSchema = new Schema({
     type: String,
     lowercase: true,
     required: [true, "can't be blank"],
+    trim: true,
     match: [/\S+@\S+\.\S+/, 'is invalid'],
     index: true,
     validate: {
@@ -16,6 +19,7 @@ const userSchema = new Schema({
   mobile: {
     type: String,
     required: [true, "can't be blank"],
+    trim: true,
     validate: {
       validator: mobile => User.doesntExist({ mobile }),
       message: 'Mobile number has already been taken.'
@@ -26,17 +30,20 @@ const userSchema = new Schema({
     contentType: String
   },
   firstname: {
-    type: String
+    type: String,
+    trim: true
   },
   lastname: {
-    type: String
+    type: String,
+    trim: true
   },
   password: {
     type: String,
+    trim: true,
     required: [true, "can't be blank"],
   }
 }, {
-  timestamps: true
+  timestamps: true  // generate createdAt, updatedAt automatically by mongoose
 });
 // pre processing, hash raw password before save
 userSchema.pre('save', async function () {

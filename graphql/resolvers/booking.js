@@ -1,9 +1,9 @@
 'use strict';
 
 const User = require('../../models/user');
-const Booking = require('../../models/booking');
-const Event = require('../../models/event');
-const { dateToString } = require('../../helpers/date');
+const Booking = require('../../models/bookings');
+const Event = require('../../models/plans');
+const { dateToString } = require('../../utils/utils');
 // const { events, singleEvent, user } = require('./util');
 const { transformBooking, transformEvent } = require('./mergeData');
 
@@ -46,8 +46,8 @@ module.exports = {
       const event = transformEvent(booking.event);
       await Booking.deleteOne({_id: args.bookingId});
       return event;
-    }catch(err){
-      throw err;
+    }catch(ex){
+      throw ex;
     }
   }
 };

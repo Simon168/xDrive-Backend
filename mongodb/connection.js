@@ -1,6 +1,6 @@
 'use strict';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const mongodb_options = {
   poolSize: 10, // Maintain up to 10 socket connections
@@ -15,13 +15,11 @@ const mongodb_options = {
   useUnifiedTopology: true
 };
 
-//import mongoose connection config
-// const config = require("../config/config.js");
 
-const mongodbConnection = () => {
+export default () => {
       let uri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URI}`;
       mongoose.connect(uri, mongodb_options);
-      // Get Mongoose to use the global promise library
+      //Get Mongoose to use the global promise library
       mongoose.Promise = global.Promise;
       const db = mongoose.connection;
       // get notification of connection status
@@ -54,6 +52,3 @@ const mongodbConnection = () => {
         }
       );
     }
-
-
-module.exports = mongodbConnection;

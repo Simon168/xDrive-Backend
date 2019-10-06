@@ -1,13 +1,18 @@
 'use strict';
 
-const authResolver = require('./auth');
-const eventsResolver = require('./events');
-const bookingResolver = require('./booking');
+import  authResolver from './auth';
+//import  eventsResolver from './plans';
+//import  bookingResolver from './booking';
 
-const rootResolver = {
-  ...authResolver,
-  ...eventsResolver,
-  ...bookingResolver
-};
+export default [
+  authResolver,
 
-module.exports = rootResolver;
+]
+
+// const rootResolver = {
+//   ...authResolver,
+//   ...eventsResolver,
+//   ...bookingResolver
+// };
+//
+// module.exports = rootResolver;

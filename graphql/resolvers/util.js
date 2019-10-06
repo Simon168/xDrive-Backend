@@ -1,10 +1,10 @@
 'use strict';
 
 const User = require('../../models/user');
-const Booking = require('../../models/booking');
-const Event = require('../../models/event');
+const Booking = require('../../models/bookings');
+const Event = require('../../models/plans');
 
-const { dateToString } = require('../../helpers/date');
+const { dateToString } = require('../../utils/utils');
 
 const transformBooking = booking => {
   return {
